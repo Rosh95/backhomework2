@@ -1,5 +1,6 @@
 import {Request, Response, Router} from 'express';
 import {videoData, VideoType} from '../videosData';
+import {newPostVideoValidate} from '../validation/videosValidation';
 
 export const videosRouter = Router({})
 
@@ -8,7 +9,7 @@ videosRouter.get('/', (req: Request, res: Response) => {
 })
 
 videosRouter.get('/:id', (req: Request, res: Response) => {
-    let findVideo = videoData.find(m => m.id === +req.params.id)
+    let findVideo: VideoType | undefined = videoData.find(m => m.id === +req.params.id)
     if (findVideo) {
         res.status(200).send(findVideo)
         return;
@@ -28,7 +29,10 @@ videosRouter.delete('/:id', (req: Request, res: Response) => {
 })
 
 videosRouter.post('/', (req: Request, res: Response) => {
-
+    let err = newPostVideoValidate(req.body)
+    if (err) {
+        res.send(400)
+    }
     const createdAt = new Date();
     const publicationDate = new Date(createdAt.getTime() + 86400000);
     let newVideo = {
@@ -56,7 +60,7 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
         return;
     }
 
-    const updateVideo = {
+    const updateVideo: VideoType = {
         ...findVideo,
         ...req.body
     }

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.videosRouter = void 0;
 const express_1 = require("express");
 const videosData_1 = require("../videosData");
+const videosValidation_1 = require("../validation/videosValidation");
 exports.videosRouter = (0, express_1.Router)({});
 exports.videosRouter.get('/', (req, res) => {
     res.status(200).send(videosData_1.videoData);
@@ -26,6 +27,10 @@ exports.videosRouter.delete('/:id', (req, res) => {
     res.send(404);
 });
 exports.videosRouter.post('/', (req, res) => {
+    let err = (0, videosValidation_1.newPostVideoValidate)(req.body);
+    if (err) {
+        res.send(400);
+    }
     const createdAt = new Date();
     const publicationDate = new Date(createdAt.getTime() + 86400000);
     let newVideo = {
