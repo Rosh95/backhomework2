@@ -39,7 +39,7 @@ exports.videosRouter.post('/', (req, res) => {
         availableResolutions: req.body.availableResolutions
     };
     videosData_1.videoData.push(newVideo);
-    res.status(201).send(videosData_1.videoData);
+    res.status(201).send(newVideo);
 });
 exports.videosRouter.put('/:id', (req, res) => {
     let findVideo = videosData_1.videoData.find(m => m.id === +req.params.id);

@@ -43,7 +43,7 @@ videosRouter.post('/', (req: Request, res: Response) => {
     }
     videoData.push(newVideo);
 
-    res.status(201).send(videoData)
+    res.status(201).send(newVideo)
 
 })
 
