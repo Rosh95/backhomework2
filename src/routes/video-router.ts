@@ -4,7 +4,7 @@ import {videoData, VideoType} from '../videosData';
 export const videosRouter = Router({})
 
 videosRouter.get('/', (req: Request, res: Response) => {
-    res.send(videoData)
+    res.status(200).send(videoData)
 })
 
 videosRouter.get('/:id', (req: Request, res: Response) => {

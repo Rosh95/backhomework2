@@ -1,6 +1,7 @@
-import express, {Request, Response} from 'express'
+import express from 'express'
 import bodyParser from 'body-parser';
 import {videosRouter} from './routes/video-router';
+import {testRouter} from './routes/test-router';
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(parserMiddleWare)
 let baseUrl = '/hometask_01/api'
 
 app.use(baseUrl + '/videos', videosRouter)
+app.use(baseUrl + '/testing/all-data', testRouter)
 
 
 app.listen(port, () => {

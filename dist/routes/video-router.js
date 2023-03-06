@@ -5,7 +5,7 @@ const express_1 = require("express");
 const videosData_1 = require("../videosData");
 exports.videosRouter = (0, express_1.Router)({});
 exports.videosRouter.get('/', (req, res) => {
-    res.send(videosData_1.videoData);
+    res.status(200).send(videosData_1.videoData);
 });
 exports.videosRouter.get('/:id', (req, res) => {
     let findVideo = videosData_1.videoData.find(m => m.id === +req.params.id);
