@@ -34,13 +34,13 @@ export const newPostVideoValidate = (req: newPostVideoValidateType) => {
     if (!req.title || !req.title.trim() || req.title.length > 40) {
         errorsMessages.push({
             message: 'Title should be less then 40 symbols',
-            field: 'Title'
+            field: 'title'
         })
     }
     if (!req.author || !req.author.trim() || req.author.length > 20) {
         errorsMessages.push({
             message: 'Author should be less then 40 symbols',
-            field: 'Author'
+            field: 'author'
         })
     }
 
@@ -48,7 +48,7 @@ export const newPostVideoValidate = (req: newPostVideoValidateType) => {
         if (req.availableResolutions.length === 0 || !(contains(req.availableResolutions, availableResolutions))) {
             errorsMessages.push({
                 message: `AvailableResolutions should be one of ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160'] `,
-                field: 'AvailableResolutions'
+                field: 'availableResolutions'
             })
         }
     }
