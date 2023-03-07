@@ -28,8 +28,9 @@ exports.videosRouter.delete('/:id', (req, res) => {
 });
 exports.videosRouter.post('/', (req, res) => {
     let err = (0, videosValidation_1.newPostVideoValidate)(req.body);
-    if (err) {
-        res.send(400);
+    if (err.length > 0) {
+        res.status(400).send(err);
+        return;
     }
     const createdAt = new Date();
     const publicationDate = new Date(createdAt.getTime() + 86400000);
@@ -47,13 +48,18 @@ exports.videosRouter.post('/', (req, res) => {
     res.status(201).send(newVideo);
 });
 exports.videosRouter.put('/:id', (req, res) => {
-    let findVideo = videosData_1.videoData.find(m => m.id === +req.params.id);
+    //   let findVideo: VideoType | undefined = videoData.find(m => m.id === +req.params.id)
     let videoIndex = videosData_1.videoData.findIndex(m => m.id === +req.params.id);
-    if (!findVideo) {
+    if (videoIndex < 0) {
         res.send(404);
         return;
     }
-    const updateVideo = Object.assign(Object.assign({}, findVideo), req.body);
+    let err = (0, videosValidation_1.updatePostVideoValidate)(req.body);
+    if (err.length > 0) {
+        res.status(400).send(err);
+        return;
+    }
+    const updateVideo = Object.assign(Object.assign({}, videosData_1.videoData[videoIndex]), req.body);
     videosData_1.videoData.splice(videoIndex, 1, updateVideo);
     res.status(201).send(updateVideo);
 });

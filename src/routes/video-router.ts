@@ -1,6 +1,6 @@
 import {Request, Response, Router} from 'express';
 import {videoData, VideoType} from '../videosData';
-import {newPostVideoValidate} from '../validation/videosValidation';
+import { newPostVideoValidate, updatePostVideoValidate} from '../validation/videosValidation';
 
 export const videosRouter = Router({})
 
@@ -30,12 +30,13 @@ videosRouter.delete('/:id', (req: Request, res: Response) => {
 
 videosRouter.post('/', (req: Request, res: Response) => {
     let err = newPostVideoValidate(req.body)
-    if (err) {
-        res.send(400)
+    if (err.length > 0) {
+        res.status(400).send(err);
+        return;
     }
     const createdAt = new Date();
     const publicationDate = new Date(createdAt.getTime() + 86400000);
-    let newVideo = {
+    let newVideo: VideoType = {
         id: Date.now(),
         title: req.body.title,
         author: req.body.author,
@@ -52,16 +53,22 @@ videosRouter.post('/', (req: Request, res: Response) => {
 })
 
 videosRouter.put('/:id', (req: Request, res: Response) => {
-    let findVideo: VideoType | undefined = videoData.find(m => m.id === +req.params.id)
+    //   let findVideo: VideoType | undefined = videoData.find(m => m.id === +req.params.id)
     let videoIndex = videoData.findIndex(m => m.id === +req.params.id)
-
-    if (!findVideo) {
+    if (videoIndex < 0) {
         res.send(404);
         return;
     }
 
+    let err = updatePostVideoValidate(req.body)
+    if (err.length > 0) {
+        res.status(400).send(err);
+        return;
+    }
+
+
     const updateVideo: VideoType = {
-        ...findVideo,
+        ...videoData[videoIndex],
         ...req.body
     }
     videoData.splice(videoIndex, 1, updateVideo)

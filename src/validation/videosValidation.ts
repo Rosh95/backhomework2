@@ -1,16 +1,107 @@
-import {VideoType} from '../videosData';
 
-enum availableResolutions {P144, P240, P360, P480, P720, P1080, P1440, P2160}
+const availableResolutions: Array<string> = ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160']
 
-export const newPostVideoValidate = (req: any) => {
-
-    let arrErrors = []
-    if (typeof req.title !== 'string' || req.title.length > 40) {
-        arrErrors.push('error in title')
+function contains(what: Array<string>, where: Array<string>) {
+    for (let i = 0; i < what.length; i++) {
+        if (where.indexOf(what[i]) == -1) return false;
     }
-    if (typeof req.author !== 'string' || req.title.length > 20) {
-        arrErrors.push('error in author')
+    return true;
+}
+
+type newPostVideoValidateType = {
+    title: string,
+    author: string,
+    availableResolutions: Array<string>
+
+}
+
+type ErrorsType = {
+    message: string,
+    field: string
+}
+
+type updateVideoType = {
+    title: string,
+    author: string,
+    canBeDownloaded?: boolean | false,
+    minAgeRestriction?: number | null,
+    createdAt?: string,
+    publicationDate?: string,
+    availableResolutions?: string[];
+}
+
+export let ErrorsResult: Array<ErrorsType> = [];
+export const newPostVideoValidate = (req: newPostVideoValidateType) => {
+
+    if (!req.title || !req.title.trim() || req.title.length > 40) {
+        ErrorsResult.push({
+            message: 'Title should be less then 40 symbols',
+            field: 'Message'
+        })
+    }
+    if (!req.author || !req.author.trim() || req.author.length > 20) {
+        ErrorsResult.push({
+            message: 'Author should be less then 40 symbols',
+            field: 'Author'
+        })
     }
 
-    return arrErrors;
+    if (req.availableResolutions) {
+        if (req.availableResolutions.length === 0 || !(contains(req.availableResolutions, availableResolutions))) {
+            ErrorsResult.push({
+                message: `AvailableResolutions should be one of ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160'] `,
+                field: 'AvailableResolutions'
+            })
+        }
+    }
+
+
+    return ErrorsResult;
+}
+
+export const updatePostVideoValidate = (req: updateVideoType) => {
+
+    if (!req.title || !req.title.trim() || req.title.length > 40) {
+        ErrorsResult.push({
+            message: 'Title should be less then 40 symbols',
+            field: 'Message'
+        })
+    }
+    if (!!req.author || req.title.trim() === '' || req.author.length > 20) {
+        ErrorsResult.push({
+            message: 'Author should be less then 40 symbols',
+            field: 'Author'
+        })
+    }
+
+    if (req.availableResolutions) {
+        if (req.availableResolutions.length === 0 || !(contains(req.availableResolutions, availableResolutions))) {
+            ErrorsResult.push({
+                message: `AvailableResolutions should be one of ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160'] `,
+                field: 'AvailableResolutions'
+            })
+        }
+    }
+
+    req.canBeDownloaded ? req.canBeDownloaded : req.canBeDownloaded = false;
+
+    if (req.minAgeRestriction) {
+        if (req.minAgeRestriction < 1 || req.minAgeRestriction > 18 || req.minAgeRestriction !== null) {
+            ErrorsResult.push({
+                message: `Min Age Restriction should more than 1 and less then 18 or null`,
+                field: 'AvailableResolutions'
+            })
+        } else {
+            req.minAgeRestriction = null;
+        }
+    }
+
+    (typeof req.publicationDate) !== 'string' ?
+        ErrorsResult.push({
+            message: `Publication Date should string`,
+            field: 'AvailableResolutions'
+        }) : req.publicationDate;
+
+
+    return ErrorsResult;
 }
