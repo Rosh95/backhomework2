@@ -29,7 +29,7 @@ exports.videosRouter.delete('/:id', (req, res) => {
 exports.videosRouter.post('/', (req, res) => {
     let err = (0, videosValidation_1.newPostVideoValidate)(req.body);
     if (err.length > 0) {
-        res.status(400).send(err);
+        res.status(400).send({ errorsMessages: videosValidation_1.errorsMessages });
         return;
     }
     const createdAt = new Date();
@@ -56,7 +56,7 @@ exports.videosRouter.put('/:id', (req, res) => {
     }
     let err = (0, videosValidation_1.updatePostVideoValidate)(req.body);
     if (err.length > 0) {
-        res.status(400).send(err);
+        res.status(400).send({ errorsMessages: videosValidation_1.errorsMessages });
         return;
     }
     const updateVideo = Object.assign(Object.assign({}, videosData_1.videoData[videoIndex]), req.body);

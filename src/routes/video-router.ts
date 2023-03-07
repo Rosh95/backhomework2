@@ -1,6 +1,6 @@
 import {Request, Response, Router} from 'express';
 import {videoData, VideoType} from '../videosData';
-import { newPostVideoValidate, updatePostVideoValidate} from '../validation/videosValidation';
+import {errorsMessages, newPostVideoValidate, updatePostVideoValidate} from '../validation/videosValidation';
 
 export const videosRouter = Router({})
 
@@ -31,7 +31,7 @@ videosRouter.delete('/:id', (req: Request, res: Response) => {
 videosRouter.post('/', (req: Request, res: Response) => {
     let err = newPostVideoValidate(req.body)
     if (err.length > 0) {
-        res.status(400).send(err);
+        res.status(400).send({errorsMessages});
         return;
     }
     const createdAt = new Date();
@@ -62,7 +62,7 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
 
     let err = updatePostVideoValidate(req.body)
     if (err.length > 0) {
-        res.status(400).send(err);
+        res.status(400).send({errorsMessages});
         return;
     }
 

@@ -66,7 +66,7 @@ export const updatePostVideoValidate = (req: updateVideoType) => {
             field: 'Message'
         })
     }
-    if (!!req.author || req.title.trim() === '' || req.author.length > 20) {
+    if (!req.author || req.title.trim() === '' || req.author.length > 20) {
         errorsMessages.push({
             message: 'Author should be less then 20 symbols',
             field: 'Author'
@@ -85,7 +85,7 @@ export const updatePostVideoValidate = (req: updateVideoType) => {
     req.canBeDownloaded ? req.canBeDownloaded : req.canBeDownloaded = false;
 
     if (req.minAgeRestriction) {
-        if (req.minAgeRestriction < 1 || req.minAgeRestriction > 18 || req.minAgeRestriction !== null) {
+        if (req.minAgeRestriction < 1 || req.minAgeRestriction > 18) {
             errorsMessages.push({
                 message: `Min Age Restriction should more than 1 and less then 18 or null`,
                 field: 'AvailableResolutions'
