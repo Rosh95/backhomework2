@@ -14,7 +14,7 @@ videosRouter.get('/:id', (req: Request, res: Response) => {
         res.status(200).send(findVideo)
         return;
     }
-    res.send(404)
+    res.sendStatus(404)
 })
 
 videosRouter.delete('/:id', (req: Request, res: Response) => {
@@ -25,7 +25,7 @@ videosRouter.delete('/:id', (req: Request, res: Response) => {
             return
         }
     }
-    res.send(404)
+    res.sendStatus(404)
 })
 
 videosRouter.post('/', (req: Request, res: Response) => {
@@ -53,25 +53,16 @@ videosRouter.post('/', (req: Request, res: Response) => {
 })
 
 videosRouter.put('/:id', (req: Request, res: Response) => {
-    //   let findVideo: VideoType | undefined = videoData.find(m => m.id === +req.params.id)
-    let videoIndex = videoData.findIndex(m => m.id === +req.params.id)
-    if (videoIndex < 0) {
-        res.send(404);
-        return;
-    }
+    const err = updatePostVideoValidate(req.body)
+    if (err.length > 0) return res.status(400).send({errorsMessages: err});
 
-    let err = updatePostVideoValidate(req.body)
-    if (err.length > 0) {
-        res.status(400).send({errorsMessages: err});
-        return;
-    }
-
-
-    const updateVideo: VideoType = {
-        ...videoData[videoIndex],
-        ...req.body
-    }
-    videoData.splice(videoIndex, 1, updateVideo)
-    res.status(204).send(updateVideo)
-
+    const video = videoData.find(m => m.id === +req.params.id)
+    if (!video) return res.sendStatus(404)
+    video.title = req.body.title
+    video.author = req.body.author
+    video.canBeDownloaded = req.body.canBeDownloaded
+    video.minAgeRestriction = req.body.minAgeRestriction
+    video.publicationDate = req.body.publicationDate
+    video.availableResolutions = req.body.availableResolutions
+    return res.sendStatus(204)
 })
