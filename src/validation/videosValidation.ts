@@ -34,7 +34,7 @@ export const newPostVideoValidate = (req: newPostVideoValidateType) => {
     if (!req.title || !req.title.trim() || req.title.length > 40) {
         errorsMessages.push({
             message: 'Title should be less then 40 symbols',
-            field: 'Message'
+            field: 'Title'
         })
     }
     if (!req.author || !req.author.trim() || req.author.length > 20) {

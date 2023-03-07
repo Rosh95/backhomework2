@@ -72,6 +72,6 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
         ...req.body
     }
     videoData.splice(videoIndex, 1, updateVideo)
-    res.status(201).send(updateVideo)
+    res.status(204).send(updateVideo)
 
 })

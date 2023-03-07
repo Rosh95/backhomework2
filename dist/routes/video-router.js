@@ -61,5 +61,5 @@ exports.videosRouter.put('/:id', (req, res) => {
     }
     const updateVideo = Object.assign(Object.assign({}, videosData_1.videoData[videoIndex]), req.body);
     videosData_1.videoData.splice(videoIndex, 1, updateVideo);
-    res.status(201).send(updateVideo);
+    res.status(204).send(updateVideo);
 });
