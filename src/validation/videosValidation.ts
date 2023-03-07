@@ -1,4 +1,3 @@
-
 const availableResolutions: Array<string> = ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160']
 
 function contains(what: Array<string>, where: Array<string>) {
@@ -30,17 +29,17 @@ type updateVideoType = {
     availableResolutions?: string[];
 }
 
-export let ErrorsResult: Array<ErrorsType> = [];
+export let errorsMessages: Array<ErrorsType> = [];
 export const newPostVideoValidate = (req: newPostVideoValidateType) => {
 
     if (!req.title || !req.title.trim() || req.title.length > 40) {
-        ErrorsResult.push({
+        errorsMessages.push({
             message: 'Title should be less then 40 symbols',
             field: 'Message'
         })
     }
     if (!req.author || !req.author.trim() || req.author.length > 20) {
-        ErrorsResult.push({
+        errorsMessages.push({
             message: 'Author should be less then 40 symbols',
             field: 'Author'
         })
@@ -48,7 +47,7 @@ export const newPostVideoValidate = (req: newPostVideoValidateType) => {
 
     if (req.availableResolutions) {
         if (req.availableResolutions.length === 0 || !(contains(req.availableResolutions, availableResolutions))) {
-            ErrorsResult.push({
+            errorsMessages.push({
                 message: `AvailableResolutions should be one of ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160'] `,
                 field: 'AvailableResolutions'
             })
@@ -56,27 +55,27 @@ export const newPostVideoValidate = (req: newPostVideoValidateType) => {
     }
 
 
-    return ErrorsResult;
+    return errorsMessages;
 }
 
 export const updatePostVideoValidate = (req: updateVideoType) => {
 
     if (!req.title || !req.title.trim() || req.title.length > 40) {
-        ErrorsResult.push({
+        errorsMessages.push({
             message: 'Title should be less then 40 symbols',
             field: 'Message'
         })
     }
     if (!!req.author || req.title.trim() === '' || req.author.length > 20) {
-        ErrorsResult.push({
-            message: 'Author should be less then 40 symbols',
+        errorsMessages.push({
+            message: 'Author should be less then 20 symbols',
             field: 'Author'
         })
     }
 
     if (req.availableResolutions) {
         if (req.availableResolutions.length === 0 || !(contains(req.availableResolutions, availableResolutions))) {
-            ErrorsResult.push({
+            errorsMessages.push({
                 message: `AvailableResolutions should be one of ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160'] `,
                 field: 'AvailableResolutions'
             })
@@ -87,7 +86,7 @@ export const updatePostVideoValidate = (req: updateVideoType) => {
 
     if (req.minAgeRestriction) {
         if (req.minAgeRestriction < 1 || req.minAgeRestriction > 18 || req.minAgeRestriction !== null) {
-            ErrorsResult.push({
+            errorsMessages.push({
                 message: `Min Age Restriction should more than 1 and less then 18 or null`,
                 field: 'AvailableResolutions'
             })
@@ -97,11 +96,11 @@ export const updatePostVideoValidate = (req: updateVideoType) => {
     }
 
     (typeof req.publicationDate) !== 'string' ?
-        ErrorsResult.push({
+        errorsMessages.push({
             message: `Publication Date should string`,
             field: 'AvailableResolutions'
         }) : req.publicationDate;
 
 
-    return ErrorsResult;
+    return errorsMessages;
 }
