@@ -22,15 +22,14 @@ type ErrorsType = {
 type updateVideoType = {
     title: string,
     author: string,
-    canBeDownloaded?: boolean | false,
+    canBeDownloaded?: boolean,
     minAgeRestriction?: number | null,
     createdAt?: string,
     publicationDate?: string,
     availableResolutions?: string[];
 }
-
-export let errorsMessages: Array<ErrorsType> = [];
 export const newPostVideoValidate = (req: newPostVideoValidateType) => {
+    let errorsMessages: Array<ErrorsType> = [];
 
     if (!req.title || !req.title.trim() || req.title.length > 40) {
         errorsMessages.push({
@@ -58,7 +57,9 @@ export const newPostVideoValidate = (req: newPostVideoValidateType) => {
     return errorsMessages;
 }
 
-export const updatePostVideoValidate = (req: updateVideoType) => {
+export const updatePostVideoValidate = ( req: updateVideoType) => {
+
+    let errorsMessages: Array<ErrorsType> = [];
 
     if (!req.title || !req.title.trim() || req.title.length > 40) {
         errorsMessages.push({
@@ -90,9 +91,10 @@ export const updatePostVideoValidate = (req: updateVideoType) => {
                 message: `Min Age Restriction should more than 1 and less then 18 or null`,
                 field: 'AvailableResolutions'
             })
-        } else {
-            req.minAgeRestriction = null;
         }
+    }
+    else {
+        req.minAgeRestriction = null;
     }
 
     (typeof req.publicationDate) !== 'string' ?

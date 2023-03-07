@@ -10,9 +10,7 @@ const port = process.env.port || 3001;
 const parserMiddleWare = bodyParser({});
 app.use(parserMiddleWare)
 
-let baseUrl = '/hometask_01/api'
-
-app.use(baseUrl + '/videos', videosRouter)
+app.use('/videos', videosRouter)
 
 
 app.delete('/testing/all-data', (req: Request, res: Response) => {

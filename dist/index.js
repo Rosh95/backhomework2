@@ -11,8 +11,7 @@ const app = (0, express_1.default)();
 const port = process.env.port || 3001;
 const parserMiddleWare = (0, body_parser_1.default)({});
 app.use(parserMiddleWare);
-let baseUrl = '/hometask_01/api';
-app.use(baseUrl + '/videos', video_router_1.videosRouter);
+app.use('/videos', video_router_1.videosRouter);
 app.delete('/testing/all-data', (req, res) => {
     if (videosData_1.videoData.length > 0) {
         videosData_1.videoData.splice(0);
