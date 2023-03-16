@@ -24,7 +24,7 @@ exports.blogsRouter.delete('/:id', authorization_1.basicAuthMiddleware, (req, re
         res.sendStatus(204);
     }
     else
-        res.sendStatus(400);
+        res.sendStatus(404);
 });
 exports.blogsRouter.post('/', blogs_validation_middleware_1.nameBlogMiddleware, blogs_validation_middleware_1.descriptionBlogMiddleware, blogs_validation_middleware_1.websiteUrlBlogMiddleware, blogs_validation_middleware_1.errorsBlogMiddleware, authorization_1.basicAuthMiddleware, (req, res) => {
     const newBlog = blog_repository_1.blogRepository.createBlog(req.body.name, req.body.description, req.body.websiteUrl);
